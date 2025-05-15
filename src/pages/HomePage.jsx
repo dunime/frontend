@@ -615,14 +615,7 @@ export default function DunimeHomePage() {
           scrollRight={scrollRight}
         />
 
-        <AnimeSection
-          title="Latest Updated Episodes"
-          animeList={latestUpdatedEpisodes}
-          sectionId="latest"
-          registerRef={registerRef}
-          scrollLeft={scrollLeft}
-          scrollRight={scrollRight}
-        />
+      
 
         <AnimeSection
           title="Top Upcoming"
