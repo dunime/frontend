@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, useCallback } from 'react';
 import { Menu, X, Search, ChevronLeft, ChevronRight, Play } from 'lucide-react';
 import axios from 'axios';
 
+
 // ... (rest of your sample data)
 const trendingAnime = [
   { id: 1, title: "Demon Slayer: Kimetsu no Yaiba", image: "/api/placeholder/280/400" },
@@ -281,7 +282,26 @@ export default function DunimeHomePage() {
   const toggleFilter = () => {
     setFilterOpen(!filterOpen);
   };
+ const applyFilters = () => {
+   const params = new URLSearchParams();
 
+   if (filterType !== 'All') params.set('type', filterType);
+   if (filterStatus !== 'All') params.set('status', filterStatus);
+   if (filterSeason !== 'All') params.set('season', filterSeason);
+   if (filterYear !== 'All') params.set('year', filterYear);
+   if (selectedGenres.length > 0) params.set('genre', selectedGenres.join(','));
+navigate(`/filter?${params.toString()}`);
+   setFilterOpen(false);
+   // Optionally reset current page if you have pagination
+   // setCurrentPage(1);
+  };
+  const handleGenreChange = (genre) => {
+   if (selectedGenres.includes(genre)) {
+    setSelectedGenres(selectedGenres.filter((g) => g !== genre));
+   } else {
+    setSelectedGenres([...selectedGenres, genre]);
+   }
+  };
   // Generate years for filter dropdown
   const years = Array.from({ length: 2025 - 1917 + 1 }, (_, i) => 2025 - i);
 
@@ -345,7 +365,7 @@ export default function DunimeHomePage() {
                 <nav>
                   <ul className="space-y-4">
                     <li>
-                    <button
+                    <button  
     onClick={() => {
       toggleSideMenu(); // Close the menu
       navigate('/'); // Navigate to the homepage route
@@ -522,6 +542,9 @@ export default function DunimeHomePage() {
               Cancel
             </button>
             <button
+             onClick={() => {
+   applyFilters();
+  }}
               className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md"
             >
               Apply Filters
