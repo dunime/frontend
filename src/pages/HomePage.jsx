@@ -346,49 +346,24 @@ export default function DunimeHomePage() {
             {isSearching && (
               <div className="text-sm text-gray-300">Searching...</div>
             )}
-            {searchResults?.map((anime) => (
-              <div
-                key={anime.id}
-                className="bg-gray-800 p-4 rounded-lg shadow hover:shadow-lg cursor-pointer"
-                onClick={() => setSelectedAnime(anime)}
-              >
-                <img
-                  src={anime.image}
-                  alt={anime.title}
-                  className="w-full h-64 object-cover rounded"
-                />
-                <h3 className="mt-2 text-lg font-semibold text-white">
-                  {anime.title}
-                </h3>
-              </div>
-            ))}
-
-            {/* {searchResults.length > 0 && (
-              <div className="bg-gray-800 p-4 rounded shadow-md">
-                <h3 className="text-lg font-semibold mb-2 text-purple-300">
-                  Results:
-                </h3>
-                <ul className="space-y-3 max-h-80 overflow-y-auto">
-                  {searchResults.map((anime) => (
-                    <li
-                      key={anime.mal_id}
-                      className="flex items-center gap-4 hover:bg-gray-700 p-2 rounded cursor-pointer"
-                      onClick={() => navigate(`/anime/${anime.mal_id}`)}
-                    >
-                      <img
-                        src={anime.images.jpg.image_url}
-                        alt={anime.title}
-                        className="w-12 h-16 object-cover rounded"
-                      />
-                      <div>
-                        <p className="font-medium">{anime.title}</p>
-                        <p className="text-sm text-gray-400">{anime.type}</p>
-                      </div>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )} */}
+            <div className="grid grid-cols-3 gap-4 justify-between w-full">
+              {searchResults?.map((anime) => (
+                <div
+                  key={anime.id}
+                  className="bg-gray-800 p-4 rounded-lg max-w-96 h-52 flex gap-8 shadow hover:shadow-lg cursor-pointer"
+                  onClick={() => setSelectedAnime(anime)}
+                >
+                  <img
+                    src={anime.images?.jpg?.image_url}
+                    alt={anime.title}
+                    className="w-30 object-cover rounded"
+                  />
+                  <h3 className="mt-2 text-lg font-semibold text-white">
+                    {anime.title}
+                  </h3>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </header>
