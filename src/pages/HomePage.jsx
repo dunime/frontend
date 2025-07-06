@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Menu, X, Search, ChevronLeft, ChevronRight, Play } from "lucide-react";
 import axios from "axios";
 
+
 // ... (rest of your sample data)
 
 const carouselSlides = [
@@ -270,7 +271,26 @@ export default function DunimeHomePage() {
   const toggleFilter = () => {
     setFilterOpen(!filterOpen);
   };
+ const applyFilters = () => {
+   const params = new URLSearchParams();
 
+   if (filterType !== 'All') params.set('type', filterType);
+   if (filterStatus !== 'All') params.set('status', filterStatus);
+   if (filterSeason !== 'All') params.set('season', filterSeason);
+   if (filterYear !== 'All') params.set('year', filterYear);
+   if (selectedGenres.length > 0) params.set('genre', selectedGenres.join(','));
+navigate(`/filter?${params.toString()}`);
+   setFilterOpen(false);
+   // Optionally reset current page if you have pagination
+   // setCurrentPage(1);
+  };
+  const handleGenreChange = (genre) => {
+   if (selectedGenres.includes(genre)) {
+    setSelectedGenres(selectedGenres.filter((g) => g !== genre));
+   } else {
+    setSelectedGenres([...selectedGenres, genre]);
+   }
+  };
   // Generate years for filter dropdown
   const years = Array.from({ length: 2025 - 1917 + 1 }, (_, i) => 2025 - i);
 
@@ -391,15 +411,15 @@ export default function DunimeHomePage() {
                 <nav>
                   <ul className="space-y-4">
                     <li>
-                      <button
-                        onClick={() => {
-                          toggleSideMenu(); // Close the menu
-                          navigate("/"); // Navigate to the homepage route
-                        }}
-                        className="block py-2 text-white hover:text-purple-300 font-medium active:bg-pink-500 active:text-white rounded-md transition duration-150 ease-in-out"
-                      >
-                        Home
-                      </button>
+                    <button  
+    onClick={() => {
+      toggleSideMenu(); // Close the menu
+      navigate('/'); // Navigate to the homepage route
+    }}
+    className="block py-2 text-white hover:text-purple-300 font-medium active:bg-pink-500 active:text-white rounded-md transition duration-150 ease-in-out"
+  >
+    Home
+  </button>
                     </li>
                     <li>
                       <a
@@ -459,7 +479,135 @@ export default function DunimeHomePage() {
         </div>
       )}
 
-      <main className="container mx-auto px-6 pb-12">
+{filterOpen && (
+  <div className="fixed inset-0 z-50 flex justify-center items-center">
+    {/* Backdrop */}
+    <div
+      className="fixed inset-0 bg-black bg-opacity-70"
+      onClick={toggleFilter}
+    />
+
+    {/* Filter Content - Modified for full page */}
+    <div className="fixed inset-0 z-50 bg-gradient-to-br from-purple-900 to-pink-800 shadow-xl p-5 overflow-y-auto max-h-screen"> {/* Removed overflow-y-auto here */}
+      <div className="relative w-full h-full flex flex-col">
+        <button
+          onClick={toggleFilter}
+          className="absolute top-4 right-4 text-white z-10"
+        >
+          <X size={24} />
+        </button>
+
+        <h2 className="text-xl font-bold mb-6 text-center mt-10">Filter</h2>
+
+        <div className="space-y-4 flex-grow"> {/* Removed overflow-y-auto from here as well */}
+          {/* Type Dropdown */}
+          <div>
+            <label className="block mb-2 text-sm">Type</label>
+            <select
+              value={filterType}
+              onChange={(e) => setFilterType(e.target.value)}
+              className="w-full p-2 rounded bg-gray-800 text-white border-none focus:ring-2 focus:ring-purple-400"
+            >
+              <option value="All">All</option>
+              <option value="Movie">Movie</option>
+              <option value="Series">Series</option>
+            </select>
+          </div>
+
+          {/* Status Dropdown */}
+          <div>
+            <label className="block mb-2 text-sm">Status</label>
+            <select
+              value={filterStatus}
+              onChange={(e) => setFilterStatus(e.target.value)}
+              className="w-full p-2 rounded bg-gray-800 text-white border-none focus:ring-2 focus:ring-purple-400"
+            >
+              <option value="All">All</option>
+              <option value="Finished Airing">Finished Airing</option>
+              <option value="Currently Airing">Currently Airing</option>
+              <option value="Not Yet Aired">Not Yet Aired</option>
+            </select>
+          </div>
+
+          {/* Season Dropdown */}
+          <div>
+            <label className="block mb-2 text-sm">Season</label>
+            <select
+              value={filterSeason}
+              onChange={(e) => setFilterSeason(e.target.value)}
+              className="w-full p-2 rounded bg-gray-800 text-white border-none focus:ring-2 focus:ring-purple-400"
+            >
+              <option value="All">All</option>
+              <option value="Spring">Spring</option>
+              <option value="Summer">Summer</option>
+              <option value="Fall">Fall</option>
+              <option value="Winter">Winter</option>
+            </select>
+          </div>
+
+          {/* Year Dropdown */}
+          <div>
+            <label className="block mb-2 text-sm">Release Year</label>
+            <select
+              value={filterYear}
+              onChange={(e) => setFilterYear(e.target.value)}
+              className="w-full p-2 rounded bg-gray-800 text-white border-none focus:ring-2 focus:ring-purple-400"
+            >
+              <option value="All">All</option>
+              {years.map(year => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Genres */}
+          <div>
+            <label className="block mb-2 text-sm">Genres</label>
+            <div className="grid grid-cols-2 gap-2">
+              {genres.map((genre, index) => (
+                <div key={index} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    id={`genre-${genre}`}
+                    className="rounded border-gray-600 text-purple-500 focus:ring-purple-400 bg-gray-800"
+                  />
+                  <label
+                    htmlFor={`genre-${genre}`}
+                    className="ml-2 text-sm"
+                  >
+                    {genre}
+                  </label>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex space-x-3 pt-4">
+            <button
+              onClick={() => {
+                toggleFilter();
+                toggleSearch();
+              }}
+              className="flex-1 bg-gray-700 hover:bg-gray-600 text-white py-2 rounded-md"
+            >
+              Cancel
+            </button>
+            <button
+             onClick={() => {
+   applyFilters();
+  }}
+              className="flex-1 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded-md"
+            >
+              Apply Filters
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+)}
+      <main className="container mx-auto px-4 pb-12">
         {/* Hero Carousel */}
         <section className="relative h-64 md:h-96 mt-6 mb-10 overflow-hidden rounded-lg">
           {/* Carousel Slides */}
