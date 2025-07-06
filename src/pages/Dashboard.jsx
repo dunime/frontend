@@ -1,44 +1,42 @@
-import React from 'react';
-import { Search, ChevronRight } from 'lucide-react';
-import { useNavigate } from 'react-router-dom'; // ✅ Import navigate hook
+import React from "react";
+import { Search, ChevronRight } from "lucide-react";
+import { useNavigate } from "react-router-dom"; // ✅ Import navigate hook
 
 export default function DunimeDashboard() {
   const navigate = useNavigate(); // ✅ Hook to redirect
 
   const navLinks = [
     { title: "Home", path: "/home" },
-    { title: "Top Airing", path: "/top-airing" },
-    { title: "Most Popular", path: "/popular" },
-    { title: "Anime Movies", path: "/movies" },
-    { title: "Anime Series", path: "/series" },
-    { title: "ChatBot", path: "/bot" }
+
+    { title: "Recommendation", path: "/Filter" },
+    { title: "ChatBot", path: "/ChatBot" },
   ];
 
   const contentSections = [
     {
       title: "Dunime.com - Your Safe And Fast Site To Recommend Anime Online",
-      placeholder: `Anime has become global, something half the population of the world are into...`
+      placeholder: `Anime has become global, something half the population of the world are into...`,
     },
     {
       title: "What Is Dunime.com",
-      placeholder: `Dunime is a new anime recommendation system on the bock...`
+      placeholder: `Dunime is a new anime recommendation system on the bock...`,
     },
     {
       title: "Is There A Dunime App",
-      placeholder: `There is no a Dunime app yet. There is only the website for now...`
+      placeholder: `There is no a Dunime app yet. There is only the website for now...`,
     },
     {
       title: "How To Use Dunime Site",
-      placeholder: `To use the dunime site you first of all register...`
+      placeholder: `To use the dunime site you first of all register...`,
     },
     {
       title: "Can Dunime Compare To MyAnimeList And AniReco",
-      placeholder: `MyAnime list and AniReco are one of the two most popular anime recommendation systems...`
+      placeholder: `MyAnime list and AniReco are one of the two most popular anime recommendation systems...`,
     },
     {
       title: "Why You Should Use Dunime To Recommend Online",
-      placeholder: `Usrs might still want to use other recommenders, yes...`
-    }
+      placeholder: `Usrs might still want to use other recommenders, yes...`,
+    },
   ];
 
   const handleViewFullSite = () => {
@@ -123,7 +121,8 @@ export default function DunimeDashboard() {
           {/* Tagline */}
           <div className="pt-12">
             <p className="text-white text-xl md:text-2xl font-light text-center md:text-left">
-              Dunime.com - Your Safe and Fast Site To Recommend Anime Free Online
+              Dunime.com - Your Safe and Fast Site To Recommend Anime Free
+              Online
             </p>
           </div>
         </div>
@@ -133,8 +132,13 @@ export default function DunimeDashboard() {
       <main className="container mx-auto px-4 py-8">
         <div className="grid grid-cols-1 gap-8">
           {contentSections.map((section, index) => (
-            <section key={index} className="bg-gray-800 bg-opacity-50 p-6 rounded-lg shadow-lg">
-              <h2 className="text-xl font-bold text-white mb-4">{section.title}</h2>
+            <section
+              key={index}
+              className="bg-gray-800 bg-opacity-50 p-6 rounded-lg shadow-lg"
+            >
+              <h2 className="text-xl font-bold text-white mb-4">
+                {section.title}
+              </h2>
               <div className="text-white opacity-70 italic p-4 rounded">
                 {section.placeholder}
               </div>
@@ -146,7 +150,9 @@ export default function DunimeDashboard() {
       {/* Footer */}
       <footer className="mt-auto bg-gray-900 bg-opacity-80 py-6">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-gray-400">&copy; 2025 Dunime. All rights reserved.</p>
+          <p className="text-gray-400">
+            &copy; 2025 Dunime. All rights reserved.
+          </p>
         </div>
       </footer>
     </div>
